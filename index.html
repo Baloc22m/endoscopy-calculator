@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upper Endoscopy Eligibility Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .section {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .eligible { background-color: #d4efdf; color: #2c3e50; }
+        .not-eligible { background-color: #f8d7da; color: #721c24; }
+        .warning { background-color: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h1>Upper Endoscopy Eligibility Calculator</h1>
+    <p style="text-align: center;">This tool is for informational purposes only. Consult a healthcare provider for medical advice.</p>
+
+    <div class="section">
+        <h2>Step 1: Symptoms</h2>
+        <label><input type="checkbox" name="symptom" value="heartburn"> Persistent heartburn or acid reflux (>4 weeks despite medication)</label>
+        <label><input type="checkbox" name="symptom" value="dysphagia"> Difficulty or pain when swallowing</label>
+        <label><input type="checkbox" name="symptom" value="nausea"> Persistent nausea or vomiting</label>
+        <label><input type="checkbox" name="symptom" value="abdominal_pain"> Unexplained upper abdominal pain</label>
+        <label><input type="checkbox" name="symptom" value="bleeding"> Gastrointestinal bleeding (e.g., vomiting blood, black stools)</label>
+        <label><input type="checkbox" name="symptom" value="weight_loss"> Unexplained weight loss</label>
+        <label><input type="checkbox" name="symptom" value="anemia"> Chronic anemia (unexplained low red blood cell count)</label>
+    </div>
+
+    <div class="section">
+        <h2>Step 2: Medical History and Risk Factors</h2>
+        <label><input type="checkbox" name="history" value="barretts"> Known or suspected Barrett’s esophagus</label>
+        <label><input type="checkbox" name="history" value="ulcers"> History of esophageal or gastric ulcers</label>
+        <label><input type="checkbox" name="history" value="hpylori"> Suspected or confirmed H. pylori infection</label>
+        <label><input type="checkbox" name="history" value="varices"> History of esophageal or gastric varices</label>
+        <label><input type="checkbox" name="history" value="foreign_body"> Recent ingestion of a foreign body or food impaction</label>
+        <label><input type="checkbox" name="history" value="abnormalities"> Known or suspected upper GI tract abnormalities</label>
+        <label><input type="checkbox" name="history" value="cirrhosis"> Cirrhosis or liver disease</label>
+        <label><input type="checkbox" name="history" value="surgery"> Prior upper GI surgery requiring follow-up</label>
+    </div>
+
+    <div class="section">
+        <h2>Step 3: Screening Indications</h2>
+        <label><input type="checkbox" name="screening" value="cancer_risk"> Age >50 with risk factors for esophageal/gastric cancer (e.g., family history, smoking)</label>
+        <label><input type="checkbox" name="screening" value="celiac"> Suspected celiac disease (based on symptoms or blood tests)</label>
+        <label><input type="checkbox" name="screening" value="monitoring"> Monitoring of known conditions (e.g., Barrett’s esophagus)</label>
+    </div>
+
+    <div class="section">
+        <h2>Step 4: Contraindications</h2>
+        <label><input type="checkbox" name="contraindication" value="unstable"> Unstable medical condition (e.g., recent heart attack, severe respiratory issues)</label>
+        <label><input type="checkbox" name="contraindication" value="perforation"> Known perforation of the GI tract</label>
+        <label><input type="checkbox" name="contraindication" value="bleeding_disorder"> Severe bleeding disorders (unless corrected)</label>
+        <label><input type="checkbox" name="contraindication" value="sedation"> Inability to tolerate sedation or anesthesia</label>
+    </div>
+
+    <button onclick="calculateEligibility()">Check Eligibility</button>
+
+    <div id="result"></div>
+
+    <script>
+        function calculateEligibility() {
+            const resultDiv = document.getElementById('result');
+            const symptoms = document.querySelectorAll('input[name="symptom"]:checked');
+            const history = document.querySelectorAll('input[name="history"]:checked');
+            const screening = document.querySelectorAll('input[name="screening"]:checked');
+            const contraindications = document.querySelectorAll('input[name="contraindication"]:checked');
+
+            resultDiv.style.display = 'block';
+
+            if (contraindications.length > 0) {
+                resultDiv.className = 'warning';
+                resultDiv.innerHTML = 'WARNING: Contraindications present (e.g., unstable condition, perforation). Upper endoscopy may be unsafe. Consult a gastroenterologist to assess risks.';
+                return;
+            }
+
+            if (symptoms.length > 0 || history.length > 0 || screening.length > 0) {
+                resultDiv.className = 'eligible';
+                resultDiv.innerHTML = 'LIKELY ELIGIBLE: The patient may be eligible for upper endoscopy due to symptoms, medical history, or screening indications. Consult a gastroenterologist for referral and confirmation.';
+            } else {
+                resultDiv.className = 'not-eligible';
+                resultDiv.innerHTML = 'NOT ELIGIBLE: No symptoms, medical history, or screening indications suggest the need for upper endoscopy. Monitor for symptoms and consult a healthcare provider if concerns arise.';
+            }
+        }
+    </script>
+</body>
+</html>
